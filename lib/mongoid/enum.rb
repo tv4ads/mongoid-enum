@@ -38,6 +38,7 @@ module Mongoid
 
       def create_field(field_name, options)
         type = options[:multiple] && Array || Symbol
+        type = type == Symbol ? Mongoid::StringifiedSymbol : type
         field field_name, :type => type, :default => options[:default]
       end
 
