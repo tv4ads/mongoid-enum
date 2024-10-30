@@ -3,11 +3,7 @@ script: "bundle exec rspec spec"
 language: ruby
 
 rvm:
-  - 2.2
-  - 2.3
-  - 2.4
-  - 2.5
-  - jruby
+  - 2.7.6
 
 services:
   - mongodb
