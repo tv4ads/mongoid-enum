@@ -59,7 +59,7 @@ describe Mongoid::Enum do
 
       context "when not multiple" do
         it "is a symbol" do
-          expect(klass).to have_field(field_name).of_type(Mongoid::StringifiedSymbol)
+          expect(klass).to have_field(field_name).of_type(Symbol)
         end
 
         it "validates inclusion in values" do
