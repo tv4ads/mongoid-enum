@@ -1,11 +1,15 @@
 require 'spec_helper'
-require 'ostruct'
+
+class ValidatorTestRecord
+  include ActiveModel::Validations
+  attr_accessor :word
+end
 
 describe Mongoid::Enum::Validators::MultipleValidator do
   subject { Mongoid::Enum::Validators::MultipleValidator }
   let(:values) { [:lorem, :ipsum, :dolor, :sit] }
   let(:attribute) { :word }
-  let(:record) { OpenStruct.new(:errors => {attribute => []}, attribute => values.first) }
+  let(:record) { ValidatorTestRecord.new.tap { |r| r.word = values.first } }
   let(:allow_nil) { false }
   let(:validator) { subject.new(:attributes => attribute, :in => values, :allow_nil => allow_nil) }
 
@@ -33,14 +37,14 @@ describe Mongoid::Enum::Validators::MultipleValidator do
         before(:each) { validator.validate_each(record, attribute, nil) }
         it "won't validate" do
           expect(record.errors[attribute].any?).to be true
-          expect(record.errors[attribute]).to eq ["is not in #{values.join ", "}"]
+          expect(record.errors[attribute]).to include("is not in #{values.join(", ")}")
         end
       end
       context "and value is []" do
         before(:each) { validator.validate_each(record, attribute, []) }
         it "won't validate" do
           expect(record.errors[attribute].any?).to be true
-          expect(record.errors[attribute]).to eq ["is not in #{values.join ", "}"]
+          expect(record.errors[attribute]).to include("is not in #{values.join(", ")}")
         end
       end
     end

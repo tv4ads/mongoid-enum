@@ -13,7 +13,7 @@ module Mongoid
         end
 
         def add_error_message(record, attribute)
-          record.errors[attribute] << (options[:message] || "is not in #{options[:in].join ", "}")
+          record.errors.add(attribute, options[:message] || "is not in #{options[:in].join(", ")}")
         end
 
         def all_included?(values, allowed)
